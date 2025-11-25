@@ -3,18 +3,21 @@ import java.util.ArrayList;
 public class Student {
     private String name;
     private int year;
-    private ArrayList<String> courses = new ArrayList<>();
+    private ArrayList<String> courses;
 
     public Student(String name, int year) {
-        if (name == null || name.isEmpty()) throw new IllegalArgumentException();
-        if (year < 1 || year > 4) throw new IllegalArgumentException();
-
+        if (year < 1 || year > 4) {
+            throw new IllegalArgumentException("Рік має бути від 1 до 4");
+        }
         this.name = name;
         this.year = year;
+        this.courses = new ArrayList<>();
     }
 
     public void addCourse(String courseName) {
-        if (courseName == null || courseName.isEmpty()) return;
+        if (courseName == null || courseName.isEmpty()) {
+            throw new IllegalArgumentException("Назва дисципліни порожня");
+        }
         courses.add(courseName);
     }
 
@@ -38,15 +41,18 @@ public class Student {
         return year * 20000;
     }
 
+
+    // MAIN — що треба в завданні
     public static void main(String[] args) {
-        Student s = new Student("Vlada", 2);
 
-        s.addCourse("Math");
-        s.addCourse("Java");
-        s.addCourse("Databases");
+        Student st = new Student("Влада", 2);
 
-        System.out.println(s.getName() + ": кількість вивчаємих дисциплін - " + s.getCourseCount());
-        System.out.println(s.getName() + ": рік навчання - " + s.getYear());
-        System.out.println(s.getName() + ": заплатив за навчання - " + s.getTuition());
+        st.addCourse("Алгоритми");
+        st.addCourse("Бази даних");
+        st.addCourse("Java");
+
+        System.out.println(st.getName() + ": кількість вивчаємих дисциплін - " + st.getCourseCount());
+        System.out.println(st.getName() + ": рік навчання - " + st.getYear());
+        System.out.println(st.getName() + ": заплатив за навчання - " + st.getTuition());
     }
 }
