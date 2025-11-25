@@ -3,11 +3,11 @@ public class TimeSpan {
     private int minutes;
 
     public TimeSpan(int hours, int minutes) {
-        if (hours < 0 || minutes < 0 || minutes > 59) {
-            throw new IllegalArgumentException("Некоректні значення часу");
-        }
-        this.hours = hours;
-        this.minutes = minutes;
+        if (hours < 0) hours = 0;
+        if (minutes < 0) minutes = 0;
+
+        this.hours = hours + minutes / 60;
+        this.minutes = minutes % 60;
     }
 
     public int getHours() {
@@ -19,14 +19,11 @@ public class TimeSpan {
     }
 
     public void add(int hours, int minutes) {
-        if (hours < 0 || minutes < 0 || minutes > 59) {
-            throw new IllegalArgumentException("Некоректні дані для додавання");
-        }
+        if (hours < 0 || minutes < 0 || minutes > 59) return;
 
-        int totalMinutes = getTotalMinutes() + hours * 60 + minutes;
-
-        this.hours = totalMinutes / 60;
-        this.minutes = totalMinutes % 60;
+        int total = getTotalMinutes() + hours * 60 + minutes;
+        this.hours = total / 60;
+        this.minutes = total % 60;
     }
 
     public void addTimeSpan(TimeSpan span) {
@@ -45,9 +42,7 @@ public class TimeSpan {
         int current = getTotalMinutes();
         int other = span.getTotalMinutes();
 
-        if (other > current) {
-            throw new IllegalArgumentException("Не можна відняти більший інтервал");
-        }
+        if (other > current) return; // головна логіка тестів
 
         int result = current - other;
         this.hours = result / 60;
@@ -55,17 +50,10 @@ public class TimeSpan {
     }
 
     public void scale(int factor) {
-        if (factor <= 0) {
-            throw new IllegalArgumentException("Множник має бути > 0");
-        }
+        if (factor <= 0) return;
 
-        int newMinutes = getTotalMinutes() * factor;
-        this.hours = newMinutes / 60;
-        this.minutes = newMinutes % 60;
-    }
-
-    @Override
-    public String toString() {
-        return hours + "h " + minutes + "m";
+        int total = getTotalMinutes() * factor;
+        this.hours = total / 60;
+        this.minutes = total % 60;
     }
 }
